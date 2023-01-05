@@ -9,4 +9,5 @@ The associated resources can be found at https://github.com/Makerfabs/Pico_Prime
 
 this is a general purpuse modules that I've used in my projects
 ### ST7735.py and sysfont.py
-these are the originale drivers copied from 
+these are the originale drivers copied from https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib.
+
