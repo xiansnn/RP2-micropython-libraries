@@ -3,7 +3,7 @@
 
 This is the place where one can find my coding and DIY projects.
 All the material here is developped on MakerFab Pico development board.
-The associated resources can be found at https://github.com/Makerfabs/Pico_Primer_Kit.git
+The associated resources can be found [here](https://github.com/Makerfabs/Pico_Primer_Kit.git)
 
 ## Debug_utility folder
 This is a general purpose modules that I've used in my projects
@@ -12,7 +12,7 @@ This is a general purpose modules that I've used in my projects
 General purpose modules developped for use in my projects
 
 ### ST7735.py and sysfont.py
-These are the original unchanged drivers copied from https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib.
+These are the original unchanged drivers copied from [Pico Primer kit](https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib).
 
 ### async_push_button.py and push_button.py
 These are two versions of a general purpose push button driver. 
