@@ -46,15 +46,37 @@ class PID(Filter):
         self._B = [1]
         self._Y = [0]*self._size_out
 
-        
+
+class Means(Filter):
+    def __init__(self,size):        
+        self._size_in = size
+        self._A = [0]*self._size_in
+        self._A[-1] = 1/self._size_in 
+        self._X = [0]*self._size_in   
+        self._size_out = 1
+        self._B = [1]
+        self._Y = [0]*self._size_out
+         
+
     
 if __name__ == "__main__":
-    pid = PID(Ts=1000, Td=0, Ti=2500, G=.3)
-#     print(pid)
+    # test PID
+    pid = PID(Ts=1000, Td=0, Ti=2000, G=.5)
     setpoint = 1000
-    for n in range(30):
+    for n in range(50):
         delta = setpoint - pid._Y[0]
         print( pid.filter(delta))
+     
+    # test sliding means
+#     f = Means(5)
+#     setpoint = 1000
+#     for n in range(50):
+#         delta = setpoint - f._Y[0]
+#         print( f.filter(delta))
+
+        
+        
+    
     
     
         
