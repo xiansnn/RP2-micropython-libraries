@@ -60,18 +60,19 @@ class FilteredPID(Filter):
         a = Ti/Ts
         b = Td/Ts
         c = b/N
-        D = a*G + c
-        E = a*c*G + a*b
+        d = a*G + c
+        e = a*c*G + a*b
+        f = a+a*c
                 
         A = [0]*3
-        A[0] = 1 + D + E
-        A[1] = - (D + 2*E)
-        A[2] = E
+        A[0] = (1 + d + e)/f
+        A[1] = - (d + 2*e)/f
+        A[2] = e/f
         
         B = [0]*3
-        B[0] = 1/(a+a*c)
-        B[1] = a + 2*a*c
-        B[2] = -a*c
+        B[0] = 1
+        B[1] = (a + 2*a*c)/f
+        B[2] = -a*c/f
         
         super().__init__(A,B)
 
@@ -91,28 +92,32 @@ class Means(Filter):
 
     
 if __name__ == "__main__":
+    nb_point = 30
     def test_PID():
-        pid = PID(Ts=1000, Td=0, Ti=3000, G=.5)
+        pid = PID(Ts=1000, Td=20, Ti=3000, G=.5)
+#         print(pid)
         setpoint = 1000
-        for _ in range(50):
+        for _ in range(nb_point):
             delta = setpoint - pid.get_output()
             print( pid.filter(delta))
     def test_FileteredPID():    
-        fpid = FilteredPID(Ts=1000, Td=0, Ti=3000, G=.5, N=10)
+        fpid = FilteredPID(Ts=1000, Td=20, Ti=3000, G=.5, N=10)
+#         print(fpid)
         setpoint = 1000
-        for _ in range(50):
+        for _ in range(nb_point):
             delta = setpoint - fpid.get_output()
             print( fpid.filter(delta))
     def test_Means():     
         m = Means(5)
+        print(m)
         setpoint = 1000
-        for _ in range(50):
+        for _ in range(nb_point):
             delta = setpoint - m.get_output()
             print( m.filter(delta))
             
 
-    test_PID()
-    test_FileteredPID()
+#     test_PID()
+#     test_FileteredPID()
     test_Means()
 
         
