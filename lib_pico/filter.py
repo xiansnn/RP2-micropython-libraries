@@ -10,69 +10,110 @@ note : size of input vector is n+1,  size of output vector is m
 '''
     def __init__(self, coef_in, coef_out):
         self._size_in = len(coef_in)
+        self._X = [0]*self._size_in
         self._size_out = len(coef_out)
+        self._Y = [0]*self._size_out
         self._A = coef_in
         self._B = coef_out
-        self._X = [0]*self._size_in
-        self._Y = [0]*self._size_out
         
     def __repr__(self):
-        return f"coef_in:{self._A}, coef_out:{self._B}"
+        return f"A[i]:{self._A}, B[i]:{self._B}"
 
     def _push(self, fifo, data):
         del fifo[-1]
         fifo.insert(0, data)
 
     def filter(self, x_in):
-        self._push(self._X, x_in)
-        sum_y = 0
+        self._push(self._X, x_in) # init X[0]
+        self._push(self._Y, 0) # init Y[0]
+        
         for i in range(self._size_in):
-            sum_y += self._A[i]*self._X[i]
-        for j in range(self._size_out):
-            sum_y += self._B[j]*self._Y[j]
-        self._push(self._Y, sum_y)
-        return sum_y
+            self._Y[0] += self._A[i]*self._X[i]
+            
+        for j in range(1,self._size_out):
+            self._Y[0] += self._B[j]*self._Y[j]
+            
+        self._Y[0] = self._Y[0]/self._B[0]
+        return self._Y[0]
+    
+    def get_output(self):
+        return self._Y[0]
+    
+    
     
 class PID(Filter):
     def __init__(self, Ts, G, Ti, Td):
-#         print(f"Ts:{Ts}, G:{G}, Td:{Td}, Ti:{Ti}")
-        self._size_in = 3
-        self._A = [0]*self._size_in
-        self._A[0] = G + Ts/Ti + Td/Ts
-        self._A[1] = - (G + 2*Td/Ts)
-        self._A[2] = Td/Ts
-        self._X = [0]*self._size_in   
-        self._size_out = 1
-        self._B = [1]
-        self._Y = [0]*self._size_out
+        A = [0]*3
+        A[0] = G + Ts/Ti + Td/Ts
+        A[1] = - (G + 2*Td/Ts)
+        A[2] = Td/Ts
+        B = [0]*2
+        B[0] = 1
+        B[1] = 1
+        super().__init__(A,B)
+        
+    def __repr__(self):
+        return f"A[i]:{self._A}, B[i]:{self._B}"
+
+class FilteredPID(Filter):
+    def __init__(self, Ts, G, Ti, Td, N):
+        a = Ti/Ts
+        b = Td/Ts
+        c = b/N
+        D = a*G + c
+        E = a*c*G + a*b
+                
+        A = [0]*3
+        A[0] = 1 + D + E
+        A[1] = - (D + 2*E)
+        A[2] = E
+        
+        B = [0]*3
+        B[0] = 1/(a+a*c)
+        B[1] = a + 2*a*c
+        B[2] = -a*c
+        
+        super().__init__(A,B)
+
+        
+        
 
 
 class Means(Filter):
     def __init__(self,size):        
-        self._size_in = size
-        self._A = [0]*self._size_in
-        self._A[-1] = 1/self._size_in 
-        self._X = [0]*self._size_in   
-        self._size_out = 1
-        self._B = [1]
-        self._Y = [0]*self._size_out
+        A = [0]*size
+        A[-1] = 1/size
+        B = [0]*2
+        B[0] = 1
+        B[1] = 1
+        super().__init__(A,B)
          
 
     
 if __name__ == "__main__":
-    # test PID
-    pid = PID(Ts=1000, Td=0, Ti=2000, G=.5)
-    setpoint = 1000
-    for n in range(50):
-        delta = setpoint - pid._Y[0]
-        print( pid.filter(delta))
-     
-    # test sliding means
-#     f = Means(5)
-#     setpoint = 1000
-#     for n in range(50):
-#         delta = setpoint - f._Y[0]
-#         print( f.filter(delta))
+    def test_PID():
+        pid = PID(Ts=1000, Td=0, Ti=3000, G=.5)
+        setpoint = 1000
+        for _ in range(50):
+            delta = setpoint - pid.get_output()
+            print( pid.filter(delta))
+    def test_FileteredPID():    
+        fpid = FilteredPID(Ts=1000, Td=0, Ti=3000, G=.5, N=10)
+        setpoint = 1000
+        for _ in range(50):
+            delta = setpoint - fpid.get_output()
+            print( fpid.filter(delta))
+    def test_Means():     
+        m = Means(5)
+        setpoint = 1000
+        for _ in range(50):
+            delta = setpoint - m.get_output()
+            print( m.filter(delta))
+            
+
+    test_PID()
+    test_FileteredPID()
+    test_Means()
 
         
         
