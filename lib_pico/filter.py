@@ -1,6 +1,9 @@
 def clamp(min_value, max_value, value):
     return max(min_value ,min(value,max_value))
 
+class Coef_Exception(BaseException):
+    pass
+
 class Filter():
     '''
 coef_in : the list of n coef values in [0 ... n-1] for the n input values including present value (x[0])
@@ -11,7 +14,7 @@ note : size of input vector is n+1,  size of output vector is m
     def __init__(self, coef_in, coef_out):
         self._A = coef_in
         self._B = coef_out
-        if (self._B[0]!=1): print("warning : coef_out[0]!=1")
+        if (self._B[0]!=1): raise Coef_Exception("warning : coef_out[0]!=1")
         self._X = [0]*len(self._A)
         self._Y = [0]*len(self._B)
         
