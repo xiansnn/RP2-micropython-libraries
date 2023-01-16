@@ -24,3 +24,8 @@ They provide debounce feature, IRQ handler, choice of trigger (falling edge, ris
 This is a wrapper for the original ST7735.py driver. 
 It provides for writing text methods in dedicated frames on the ST7735 LCD display. 
 However, It is limited to text only, graphic capabilities can be performed in dedicated area with the original driver.
+
+### filter.py
+This is a general purpose class Filter implementing the generic formula : y0 = a0.x0 + a1.x1 + a2.x2 + ..... b1.y1 + b2.y2 + ....
+
+Then inherited classes are provided to implement PID, FileredPID, Means.
