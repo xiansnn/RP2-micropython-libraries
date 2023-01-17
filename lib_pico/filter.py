@@ -90,33 +90,51 @@ class Means(Filter):
 
     
 if __name__ == "__main__":
+    
+    import utime
+    from debug_utility.pulses import Probe
+    
+    probe_gpio = 16
+    p = Probe(probe_gpio)
+    
     nb_point =30
+    
     def test_PID():
         pid = PID(Ts=1000, Td=10, Ti=1500, G=.6)
-#         print(pid)
         setpoint = 1000
         for _ in range(nb_point):
             delta = setpoint - pid.get_output()
-            print( pid.filter(delta))
+            p.on()
+            y= pid.filter(delta)
+            p.off() # average execution time : 340 us
+            print(y)
+    
     def test_FileteredPID():    
         fpid = FilteredPID(Ts=1000, Td=1, Ti=1500, G=.6, N=1)
-#         print(fpid)
         setpoint = 1000
         for _ in range(nb_point):
             delta = setpoint - fpid.get_output()
-            print( fpid.filter(delta))
+            p.on()
+            y= fpid.filter(delta)
+            p.off() # average execution time : 400 us
+            print(y)
+    
     def test_Means():     
         m = Means(5)
-#         print(m)
         setpoint = 1000
         for _ in range(nb_point):
             delta = setpoint - m.get_output()
-            print( m.filter(delta))
+            p.on()
+            y= m.filter(delta)
+            p.off() # average execution time : 400 us
+            print(y)
             
 
-#     test_PID()
+    test_PID()
+    utime.sleep_ms(10)
     test_FileteredPID()
-#     test_Means()
+    utime.sleep_ms(10)
+    test_Means()
 
         
         

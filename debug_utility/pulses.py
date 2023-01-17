@@ -9,6 +9,12 @@ Usefull for debugging.
 """
     def __init__(self,probe_gpio):
         self.probe = Signal(probe_gpio,Pin.OUT, invert=False)
+        
+    def on(self):
+        self.probe.on()
+        
+    def off(self):
+        self.probe.off()
 
     def pulses(self, n):
         for i in range (n):        
@@ -43,18 +49,36 @@ def test():
     while (True):
 
         for n in range (10):
+            p.on()
+            p.off()
+            # time on -> off = 33 us
+            utime.sleep_ms(1)
+
+        utime.sleep(1)
+        
+        for n in range (10):
             p.pulses(n)
+            # time n=1 on -> off = 7 us
+            # time n=2 on -> off = 9 us
+            # time n=10 on -> off = 8 us
+            
 
         utime.sleep(1)
 
         for n in range (1,10):
             p.pulse_single(n)
+            # time n=1 on -> off = 45 us
+            # time n=2 on -> off = 37 us
+            # time n=3 on -> off = 47 us
+            # time n=4 on -> off = 56 us
+            # time n=10 on -> off = 106 us
+
 
         utime.sleep(1)
         
-        p.pulse_begin(3)
+        p.pulse_begin(3) # time on -> off = 3.02 ms 
         utime.sleep_us(500)
-        p.pulse_end(3)
+        p.pulse_end(3) # time on -> off = 3.12 ms
 
         utime.sleep(2)
 
