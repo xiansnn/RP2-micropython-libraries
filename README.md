@@ -1,9 +1,9 @@
-This is the place where one can find my coding and DIY projects.
+This is the place where we can find several general purpose code that I've needed for my DIY projects.
 All the material here is developped on MakerFab Pico development board.
 The associated resources can be found [here](https://github.com/Makerfabs/Pico_Primer_Kit.git)
 
 # Debug_utility folder
-This is a general purpose modules that I've used in my projects
+This is a the place where I've put some debugging utilities that I consider useful.
 
 # lib_pico folder
 General purpose modules developped for use in my projects
@@ -20,9 +20,9 @@ They provide debounce feature, IRQ handler, choice of trigger (falling edge, ris
 ## ST7735_GUI.py 
 This is a wrapper for the original ST7735.py driver. 
 It provides for writing text methods in dedicated frames on the ST7735 LCD display. 
-However, It is limited to text only, graphic capabilities can be performed in dedicated area with the original driver.
+However, It is limited to text only, graphic capabilities could probably be performed in dedicated area with the original driver.
 
 ## filter.py
-This is a general purpose class Filter implementing the generic formula : y0 = a0.x0 + a1.x1 + a2.x2 + ..... b1.y1 + b2.y2 + ....
+This is a general purpose Filter base class implementing the generic formula : y0 = a0.x0 + a1.x1 + a2.x2 + ..... b1.y1 + b2.y2 + ....
 
 Then inherited classes are provided to implement PID, FileredPID, Means.
