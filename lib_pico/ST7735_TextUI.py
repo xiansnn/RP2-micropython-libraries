@@ -32,7 +32,7 @@ The physical hardware display ST7735, based on ST735.py library and TFT class
     def add_frame(self, name, first_line, first_column, last_line, last_column,
                   foreground_color, background_color=TFT.BLACK, font=sysfont, font_size_factor=(1,1) ):
         f=Frame(self, name, first_line, first_column, last_line, last_column,
-                foreground_color, background_color=TFT.BLACK , font_size_factor=font_size_factor )
+                foreground_color, background_color=background_color , font_size_factor=font_size_factor )
         self.frames[f.name] = f
         return f
 
@@ -40,7 +40,7 @@ class Frame():
     '''
 '''
     def __init__(self,screen, name, first_grid_line, first_grid_column, last_grid_line, last_grid_column,
-                 foreground_color, font=sysfont , background_color=TFT.BLACK , font_size_factor=(1,1) ):
+                 foreground_color, font=sysfont , background_color=TFT.GRAY , font_size_factor=(1,1) ):
         self.tft = screen.tft
         self.name = name
 
@@ -64,10 +64,18 @@ class Frame():
         self.px_frame_size = self.last_px - self.first_px +1
         self.py_frame_size = self.last_py - self.first_py +1
         
+        
+        self.set_background_color(background_color)
         self.set_font_size_factor(font_size_factor)
 
     def set_foreground_color(self, color):
         self.foreground_color = color
+
+    def set_background_color(self, color):
+        self.background_color = color
+        aStart = (self.first_px, self.first_py)
+        aSize = (self.px_frame_size, self.py_frame_size)
+        self.tft.fillrect(aStart, aSize, self.background_color )
         
     def set_font_size_factor(self, font_size_factor):
         ''' this method can be used when the font size of a frame is changed after __init__'''
@@ -99,12 +107,12 @@ class Frame():
         for char in txt:
             self.write_char(char, append=append)
             
-    def write_char(self, char, append=True):
+    def write_char(self, char, append=True, bgColor=None):
         if self.current_char_column > self.last_char_column: # check if there is enough room to write the char on this line
             self.next_char_column()
         px = self.first_px + self.current_char_column*self.char_size[0]
         py = self.first_py + self.current_char_line*self.char_size[1]
-        self.tft.char((px,py), char, self.foreground_color, self.font, self.font_size_factor )
+        self.tft.char((px,py), char, self.foreground_color, self.font, self.font_size_factor, bgColor=self.background_color )
         if append:
             self.next_char_column()
 
@@ -142,30 +150,36 @@ class Frame():
 def test():
     """
 """
-    print("start test: 'ST7735_GUIv2'\n")
+    print("start test: 'ST7735_GUIv2'")
     ui=TFT_display()
     AA = ui.add_frame("AA",0,0,0,10,TFT.RED)
     AB = ui.add_frame("AB",0,11,0,15,TFT.GREEN)
-    AC = ui.add_frame("AC",0,16,0,20,TFT.MAROON)
+    AC = ui.add_frame("AC",0,16,0,20,TFT.FOREST)
+    
     BA = ui.add_frame("BA",1,0,1,10,TFT.ORANGE)    
     BB = ui.add_frame("BB",1,11,1,18,TFT.FOREST)
     BC = ui.add_frame("BC",1,19,1,20,TFT.GOLD)
+    
     CA = ui.add_frame("CA",2,0,2,3,TFT.RED)
     CB = ui.add_frame("CB",2,4,2,4,TFT.GREEN)
     CC = ui.add_frame("CC",2,5,2,10,TFT.YELLOW)
-    CD = ui.add_frame("CD",2,11,2,14,TFT.NAVY)
-    CE = ui.add_frame("CE",2,15,2,20,TFT.BLUE)    
-    FA = ui.add_frame("FA",5,0,12,20,TFT.CYAN)
-    NA = ui.add_frame("NA",13,0,13,20,TFT.GRAY)
+    CD = ui.add_frame("CD",2,11,2,14,TFT.NAVY, background_color=TFT.GOLD)
+    CE = ui.add_frame("CE",2,15,2,20,TFT.BLUE, background_color=TFT.YELLOW)    
     
-    DA = ui.add_frame("DA",3,0,3,3,TFT.GRAY)
-    DB = ui.add_frame("DB",3,4,3,8,TFT.GREEN)
-    DC = ui.add_frame("DC",3,9,3,14,TFT.MAROON)
-    DD = ui.add_frame("DD",3,15,3,20,TFT.ORANGE)
-    EA = ui.add_frame("EA",4,0,4,3,TFT.GOLD)
-    EB = ui.add_frame("EB",4,4,4,9,TFT.FOREST)
-    EC = ui.add_frame("EC",4,10,4,14,TFT.WHITE)
-    ED = ui.add_frame("ED",4,15,4,20,TFT.PURPLE)
+    DA = ui.add_frame("DA",3,0,3,3,TFT.GRAY, background_color=TFT.BLACK)
+    DB = ui.add_frame("DB",3,4,3,8,TFT.GREEN, background_color=TFT.BLACK)
+    DC = ui.add_frame("DC",3,9,3,14,TFT.MAROON, background_color=TFT.GOLD)
+    DD = ui.add_frame("DD",3,15,3,20,TFT.ORANGE, background_color=TFT.BLACK)
+    
+    EA = ui.add_frame("EA",4,0,4,3,TFT.GOLD, background_color=TFT.BLACK)
+    EB = ui.add_frame("EB",4,4,4,9,TFT.FOREST, background_color=TFT.BLACK)
+    EC = ui.add_frame("EC",4,10,4,14,TFT.WHITE, background_color=TFT.BLACK)
+    ED = ui.add_frame("ED",4,15,4,20,TFT.PURPLE, background_color=TFT.BLACK)
+    
+    FA = ui.add_frame("FA",5,0,12,20,TFT.BLACK)
+    
+    GA = ui.add_frame("GA",13,0,13,20,TFT.GRAY)
+    
 
     AA.write_text("frame1....>")
     AC.write_text("units")
@@ -185,7 +199,7 @@ def test():
     ED.write_text("PURPLE")
     
     
-    NA.write_text("this is the last line")
+    GA.write_text("this is the last line")
 
     
     for step in range(10):
@@ -245,33 +259,34 @@ def test():
     ui.frames["FA"].erase_frame()
     ui.frames["FA"].set_font_size_factor((4,3))
     ui.frames["FA"].set_foreground_color(TFT.WHITE)
-    msg = ("ABCDEFGH")
+    ui.frames["FA"].set_background_color(TFT.BLUE)
+    msg = ("ABCDEFGHI")
     FA.write_text(msg)
 
-    print("\nend test")
+    print("end test")
 
 def test2():
-    print("start test2\n")
+    print("start test2")
     
     ui=TFT_display()
-    ZZ = ui.add_frame("ZZ",12,0,13,20,TFT.GRAY)
-    ZZ.write_text("this is the very  last line ")
-    
-    ZA = ui.add_frame("ZA",0,0,0,10,TFT.YELLOW)
-    ZB = ui.add_frame("ZB",2,0,3,20,TFT.WHITE, font_size_factor=(2,2)  )
-    ZC = ui.add_frame("ZC",4,0,6,20,TFT.GREEN, font_size_factor=(3,3)  )
-    ZD = ui.add_frame("ZD",7,0,11,20,TFT.PURPLE, font_size_factor=(4,4)  )
-    for step in range(20): 
+    ZA = ui.add_frame("ZA",0,0,1,10,TFT.YELLOW, background_color=TFT.BLUE)
+    ZB = ui.add_frame("ZB",2,0,3,20,TFT.WHITE, font_size_factor=(2,2) , background_color=TFT.RED  )
+    ZC = ui.add_frame("ZC",4,0,6,20,TFT.GREEN, font_size_factor=(3,3), background_color=TFT.NAVY  )
+    ZD = ui.add_frame("ZD",7,0,11,20,TFT.RED, font_size_factor=(4,4), background_color=TFT.YELLOW  )
+    ZZ = ui.add_frame("ZZ",12,0,13,20,TFT.YELLOW, background_color=TFT.RED)
+
+    ZZ.write_text("this is the very  last line ")   
+    for step in range(15): 
         ZA.write_text(f"{step:0>3d}")
         ZB.write_text(f"{step:0>3d}")
         ZC.write_text(f"{step:0>3d}")
-        ZD.write_text(f"{step:0>3d}")        
+        ZD.write_text(f"{step:^5d}")        
         utime.sleep_ms(500)
 
 
-    print("\nend test")
+    print("end test")
 
 if __name__ == "__main__":
-#     test()
-#     utime.sleep(1)
+    test()
+    utime.sleep(1)
     test2()
