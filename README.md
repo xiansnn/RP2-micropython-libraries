@@ -9,7 +9,9 @@ This is a the place where I've put some debugging utilities that I consider usef
 General purpose modules developped for use in my projects
 
 ## ST7735.py and sysfont.py
-These are the original unchanged drivers copied from [Pico Primer kit](https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib).
+These are derived from the original drivers copied from [Pico Primer kit](https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib).
+
+ST7735.py has been changed to fix a bug when the font size is > 1, and background capability has aklso been added
 
 ### async_push_button.py and push_button.py
 These are two versions of a general purpose push button driver. 
@@ -17,7 +19,7 @@ They provide debounce feature, IRQ handler, choice of trigger (falling edge, ris
 - push_button.py is a synchronous version. It is no longer maintained or used, because it blocks te execution of the processor.
 - async_push_button.py is a more efficient asynchronous version, relying on "asyncio" library.
 
-## ST7735_GUI.py 
+## ST7735_TextUI.py 
 This is a wrapper for the original ST7735.py driver. 
 It provides for writing text methods in dedicated frames on the ST7735 LCD display. 
 However, It is limited to text only, graphic capabilities could probably be performed in dedicated area with the original driver.
