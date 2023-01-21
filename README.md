@@ -17,7 +17,7 @@ They provide debounce feature, IRQ handler, choice of trigger (falling edge, ris
 - push_button.py is a synchronous version. It is no longer maintained or used, because it blocks te execution of the processor.
 - async_push_button.py is a more efficient asynchronous version, relying on "asyncio" library.
 
-## ST7735_GUI.py 
+## ST7735_TextUI.py 
 This is a wrapper for the original ST7735.py driver. 
 It provides for writing text methods in dedicated frames on the ST7735 LCD display. 
 However, It is limited to text only, graphic capabilities could probably be performed in dedicated area with the original driver.
