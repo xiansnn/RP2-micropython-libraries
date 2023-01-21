@@ -91,7 +91,7 @@ class TFT(object) :
   RED = TFTColor(0xFF, 0x00, 0x00)
   MAROON = TFTColor(0x80, 0x00, 0x00)
   ORANGE = TFTColor(0xFF,0x66,0x00)
-  GOLD = TFTColor(0x80, 0x80, 0x80)
+  GOLD = TFTColor(0xFF, 0xFF, 0x80)
   GREEN = TFTColor(0x00, 0xFF, 0x00)
   FOREST = TFTColor(0x00, 0x80, 0x80)
   BLUE = TFTColor(0x00, 0x00, 0xFF)
@@ -167,7 +167,7 @@ class TFT(object) :
       self._pushcolor(aColor)
 
 #   @micropython.native
-  def text( self, aPos, aString, aColor, aFont, aSize = 1, nowrap = False ) :
+  def text( self, aPos, aString, aColor, aFont, aSize = 1, nowrap = False, bgColor=BLACK ) :
     '''Draw a text at the given position.  If the string reaches the end of the
        display it is wrapped to aPos[0] on the next line.  aSize may be an integer
        which will size the font uniformly on w,h or a or any type that may be
@@ -185,7 +185,7 @@ class TFT(object) :
     px, py = aPos
     width = wh[0] * aFont["Width"] + 1
     for c in aString:
-      self.char((px, py), c, aColor, aFont, wh)
+      self.char((px, py), c, aColor, aFont, wh, bgColor=bgColor)
       px += width
       #We check > rather than >= to let the right (blank) edge of the
       # character print off the right of the screen.
@@ -197,7 +197,7 @@ class TFT(object) :
           px = aPos[0]
 
 #   @micropython.native
-  def char( self, aPos, aChar, aColor, aFont, aSizes ) :
+  def char( self, aPos, aChar, aColor, aFont, aSizes, bgColor=BLACK ) :
     '''Draw a character at the given position using the given font and color.
        aSizes is a tuple with x, y as integer scales indicating the
        # of pixels to draw for each pixel in the character.'''
@@ -225,6 +225,10 @@ class TFT(object) :
               pos = 2 * (r * fontw + q)
               buf[pos] = aColor >> 8
               buf[pos + 1] = aColor & 0xff
+            else: # ---- new : backgcolor
+              pos = 2 * (r * fontw + q)
+              buf[pos] = bgColor >> 8
+              buf[pos + 1] = bgColor & 0xff
             c >>= 1
         self.image(aPos[0], aPos[1], aPos[0] + fontw - 1, aPos[1] + fonth - 1, buf)
       else:
@@ -233,10 +237,8 @@ class TFT(object) :
           for r in range(fonth) :
             if c & 0x01 :
               self.fillrect((px, py), aSizes, aColor)
-              #-----------fix issue about overlapping enlarged pixels
-            else:
-              self.fillrect((px, py), aSizes, TFT.BLACK)  
-              #-----------
+            else: #-----------fix issue about overlapping enlarged pixels
+              self.fillrect((px, py), aSizes, bgColor)  
             py += aSizes[1]
             c >>= 1
           px += aSizes[0]
