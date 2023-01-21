@@ -9,7 +9,9 @@ This is a the place where I've put some debugging utilities that I consider usef
 General purpose modules developped for use in my projects
 
 ## ST7735.py and sysfont.py
-These are the original unchanged drivers copied from [Pico Primer kit](https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib).
+These are derived from the original unchanged drivers copied from [Pico Primer kit](https://github.com/Makerfabs/Pico_Primer_Kit/tree/main/example/lib).
+
+ST7735.py has been changed to fix a bug when the font size is > 1, and background capability has aklso been added
 
 ### async_push_button.py and push_button.py
 These are two versions of a general purpose push button driver. 
