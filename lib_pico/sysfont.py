@@ -262,3 +262,19 @@ sysfont = {"Width": 5, "Height": 8, "Start": 0, "End": 254, "Data": bytearray([
   0x00, 0x19, 0x1D, 0x17, 0x12,
   0x00, 0x3C, 0x3C, 0x3C, 0x3C
 ])}
+
+if __name__ == "__main__":
+    from lib_pico.ST7735_TextUIv2 import TFT_display
+    from lib_pico.ST7735 import TFT
+    from machine import SPI, Pin
+    #init display
+    screen = TFT_display()
+    frame = screen.add_frame("show_font", (0,0), (54*3,127),
+                  background_color=TFT.BLACK, font=sysfont, font_size_factor=(1,1),
+                  horiz_border=0, vert_border=0 )
+    
+    for n in range(0,255):
+#         char_tab = f"{n:0>3d} {chr(n)}  "
+        char_tab = f"{chr(n)}  "
+        frame.write_text(char_tab, TFT.WHITE, append=True, reset_position=False)
+
