@@ -14,6 +14,8 @@ class Scale():
         self.color = color
         self.draw_scale()
 
+    def set_color(self, color):
+        self.color = color
     def draw_scale(self):
         self.frame.tft.hline( self.start, self.lenght, self.color )
         v_len = -6
