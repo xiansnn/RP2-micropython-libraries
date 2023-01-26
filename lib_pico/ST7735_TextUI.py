@@ -38,9 +38,20 @@ The physical hardware display ST7735, based on ST735.py library and TFT class
 
 class Frame():
     '''
-'''
+    Frame is an area of the display where we can write text. Characters are based on <sysfont.py> font.
+    Frame dimension is based on a grid. The grid dimension is computed with respect to the dimension of the font Width and Height. 
+    name : the name of the frame in the TFT_display dictionary
+    first_grid_line : The Top line number of the frame
+    first_grid_column : The Left column of the frame
+    last_grid_line : The Bottom lin number of the frame
+    last_grid_column : The Right column of the frame
+    foreground_color : the color of the character
+    background_color=TFT.BLACK : the color of the background. Default value is BLACK
+    font=sysfont : the default font
+    font_size_factor=(1,1) :  the default character size within this frame
+    '''
     def __init__(self,screen, name, first_grid_line, first_grid_column, last_grid_line, last_grid_column,
-                 foreground_color, font=sysfont , background_color=TFT.GRAY , font_size_factor=(1,1) ):
+                 foreground_color, font=sysfont , background_color=TFT.BLACK , font_size_factor=(1,1) ):
         self.tft = screen.tft
         self.name = name
 
@@ -150,7 +161,7 @@ class Frame():
 def test():
     """
 """
-    print("start test: 'ST7735_GUIv2'")
+    print("start test: 'ST7735_TextUI'")
     ui=TFT_display()
     AA = ui.add_frame("AA",0,0,0,10,TFT.RED)
     AB = ui.add_frame("AB",0,11,0,15,TFT.GREEN)
