@@ -74,11 +74,12 @@ vert_border=0 : the number of pixel space on top and bottom side of the frame
         self.current_char_line = self.first_grid_line
         self.current_char_column = self.first_grid_column
         self.set_background_color(background_color)
+        self.erase_frame()
         self.set_font_size_factor(font_size_factor)
 
     def set_background_color(self, color):
         self.background_color = color
-        self.erase_frame()
+#         self.erase_frame()
 
     def erase_frame(self):
         aSize = (self.px_frame_size   ,  self.py_frame_size)
@@ -260,6 +261,7 @@ def test_all():
     ui.frames["FA"].erase_frame()
     ui.frames["FA"].set_font_size_factor((4,3))
     ui.frames["FA"].set_background_color(TFT.BLUE)
+    ui.frames["FA"].erase_frame()
     msg = ("ABCDEFGHI")
     FA.write_text(msg,TFT.WHITE)
 
