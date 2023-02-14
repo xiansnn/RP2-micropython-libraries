@@ -81,6 +81,47 @@ def test():
         p.pulse_end(3) # time on -> off = 3.12 ms
 
         utime.sleep(2)
+        
+def test2():
+    D1 = Probe(16)
+    D2 = Probe(17)
+    D3 = Probe(18)
+    D4 = Probe(19)
+    D5 = Probe(20)
+    D6 = Probe(21)
+    D7 = Probe(22)
+    
+    while True:
+        D1.on()
+        utime.sleep_ms(100)
+        D2.on()
+        utime.sleep_ms(100)
+        D3.on()
+        utime.sleep_ms(100)
+        D4.on()
+        utime.sleep_ms(100)
+        D5.on()
+        utime.sleep_ms(100)
+        D6.on()
+        utime.sleep_ms(100)
+        D7.on()
+        utime.sleep_ms(100)
+        D7.off()
+        utime.sleep_ms(100)
+        D6.off()
+        utime.sleep_ms(100)
+        D5.off()
+        utime.sleep_ms(100)
+        D4.off()
+        utime.sleep_ms(100)
+        D3.off()
+        utime.sleep_ms(100)
+        D2.off()
+        utime.sleep_ms(100)
+        D1.off()
+        utime.sleep_ms(100)
+        
+    
 
 if __name__ == "__main__":
-    test()
+    test2()
