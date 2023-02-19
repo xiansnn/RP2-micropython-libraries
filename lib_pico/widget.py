@@ -10,16 +10,16 @@ class Scale():
         dx, dy = relative_Start
         self.frame = frame
         self.start = (px+dx,py+dy)
-        self.lenght = length
+        self.length = length
         self.color = color
         self.draw_scale()
 
     def set_color(self, color):
         self.color = color
     def draw_scale(self):
-        self.frame.tft.hline( self.start, self.lenght, self.color )
+        self.frame.tft.hline( self.start, self.length, self.color )
         v_len = -6
-        bottom = self.start[0] + self.lenght    
+        bottom = self.start[0] + self.length    
         self.frame.tft.vline( self.start, v_len, self.color )
         self.frame.tft.vline( (bottom,self.start[1]), v_len, self.color )
    
@@ -29,7 +29,7 @@ class Scale():
         else :
             color = self.color
         self.draw_scale()
-        dl = int(self.lenght/60)
+        dl = int(self.length/60)
         for n in range(value+1):
             if n%10==0 : v_len = -6
             elif n%5==0 : v_len = -4
