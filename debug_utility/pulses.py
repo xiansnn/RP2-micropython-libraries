@@ -43,7 +43,7 @@ Usefull for debugging.
 
 
 def test():
-    probe_gpio = 16
+    probe_gpio = 16 # a single  probe test 
     p = Probe(probe_gpio)
     
     while (True):
@@ -82,7 +82,7 @@ def test():
 
         utime.sleep(2)
         
-def test2():
+def test2(): # a test with multiple GPIO for logic analyser observation
     D1 = Probe(16)
     D2 = Probe(17)
     D3 = Probe(18)
