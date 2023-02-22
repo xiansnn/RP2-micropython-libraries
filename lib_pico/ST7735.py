@@ -121,7 +121,7 @@ class TFT(object) :
     #self._size =  (128, 160)
     self._size =  (128, 128) 
     self._offset = bytearray([2,3])
-    self.rotate = 2                    #Vertical with top toward pins.
+    self.rotate = 3                    #Vertical with top toward pins.
     self._rgb = False                   #color order of rgb.
     self.tfa = 0                       #top fixed area
     self.bfa = 0                       #bottom fixed area
