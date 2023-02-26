@@ -1,7 +1,7 @@
 from machine import Pin, Signal
 import utime
 import uasyncio
-
+from debug_utility.pulses import *
 
 
 class Button():   
@@ -58,9 +58,9 @@ class Button():
         self.pin.irq(handler=None)    
         self.current_change_time = utime.ticks_ms()
         self.is_pressed = bool(self.signal.value())
-        #print(self.is_pressed)
+#         print(self.is_pressed)
         last_event_delay = self.current_change_time - self.last_change_time
-        # print(f"@{utime.ticks_ms()} Button/irq_handler/last_event_delay={last_event_delay}")
+#         print(f"@{utime.ticks_ms()} Button/irq_handler/last_event_delay={last_event_delay}")
         self.last_change_time = self.current_change_time
         if last_event_delay >= self.debounce_delay:
             self.last_event_duration = last_event_delay
@@ -68,7 +68,7 @@ class Button():
                 uasyncio.run(self.irq_repeat_handler(pin))
             else:
                 self.interrupt_service_routine(self)
-        self.pin.irq(handler=self.irq_handler)        
+        self.pin.irq(handler=self.irq_handler)
 
 def test():
     print("start test: 'push_button'\
