@@ -22,7 +22,8 @@ class DHT11device:
     _humidity: float
  
     def __init__(self, gpio_device_interface, period):
-        pin = Pin(gpio_device_interface, Pin.OUT, Pin.OPEN_DRAIN, value=1)
+#         pin = Pin(gpio_device_interface, Pin.OUT, Pin.PULL_UP, value=1)
+        pin = Pin(gpio_device_interface, Pin.OPEN_DRAIN, Pin.PULL_UP, value=1)
         self._pin = pin
         self._last_measure = utime.ticks_us()
         self._temperature = -1 # not yet measured
@@ -62,15 +63,13 @@ class DHT11device:
             await asyncio.sleep(self.measure_period)
             
     def _send_init_signal(self):
-        self._pin.init(Pin.OUT, Pin.PULL_UP, value=0)
-#         self._pin.value(0)
+        self._pin.init(Pin.OPEN_DRAIN, Pin.PULL_UP, value=0)
         utime.sleep_ms(20) # data sheet : at least 18ms
-#         self._pin.value(1)
 
     @micropython.native
     def _capture_pulses(self):
         pin = self._pin
-        pin.init(Pin.IN, Pin.PULL_UP)
+        pin.init(Pin.OPEN_DRAIN, Pin.PULL_UP)
         val = 1
         idx = 0
         transitions = bytearray(EXPECTED_TRANSITIONS)
@@ -91,8 +90,7 @@ class DHT11device:
                 unchanged = 0
             else:
                 unchanged += 1
-        pin.init(Pin.OUT, Pin.PULL_UP)
-        pin.value(1)
+        pin.init(Pin.OPEN_DRAIN, Pin.PULL_UP, value=1)
         if idx != EXPECTED_TRANSITIONS:
             print(f"Expected {EXPECTED_TRANSITIONS} but got {idx} pulses" )
             return None
