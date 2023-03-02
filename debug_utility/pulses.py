@@ -96,7 +96,7 @@ if __name__ == "__main__":
             utime.sleep_ms(delay*len(probes))
             for p in probes:
                 p.on()
-                utime.sleep_ms(delay)
+#                 utime.sleep_ms(delay)
                 p.off()
         
     test2()
