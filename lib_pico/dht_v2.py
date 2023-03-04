@@ -8,7 +8,6 @@ import uasyncio as asyncio
 
 # DEBUG logic analyser probe definitions
 from debug_utility.pulses import *
-from DCF77.decoder_uGUIv1 import * #required to determine status of the clock
   
 HIGH_LEVEL_DURATION = const(50)
 # data sheet :
