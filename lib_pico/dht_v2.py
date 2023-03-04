@@ -66,7 +66,7 @@ class DHT11device:
         pulses = bytearray(EXPECTED_PULSES)
         result = 0
         while result >= 0: # result is negative when time_pulse_us times out (here 100
-            result = machine.time_pulse_us(self._pin, HIGH_LEVEL, TIME_OUT)
+            result = machine.time_pulse_us(self._pin, HIGH_LEVEL, TIME_OUT) # if TIME_OUT occurs, returns = -1 or -2
             pulses[idx] = result
             idx += 1
         return pulses
