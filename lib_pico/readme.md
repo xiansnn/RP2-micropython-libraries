@@ -9,7 +9,7 @@ They provide debounce feature, IRQ handler, choice of trigger (falling edge, ris
 - push_button.py is a synchronous version. It is no longer maintained or used, because it blocks te execution of the processor.
 - async_push_button.py is a more efficient asynchronous version, relying on "asyncio" library.
 
-# ST7735_TextUI.py 
+# ST7735_TextUIv2.py 
 This is a wrapper for the original ST7735.py driver. 
 It provides for writing text methods in dedicated frames on the ST7735 LCD display. 
 However, It is limited to text only, graphic capabilities could probably be performed in dedicated area with the original driver.
@@ -18,4 +18,7 @@ However, It is limited to text only, graphic capabilities could probably be perf
 This is a general purpose Filter base class implementing the generic formula : y0 = a0.x0 + a1.x1 + a2.x2 + ..... b1.y1 + b2.y2 + ....
 
 Then inherited classes are provided to implement PID, FileredPID, Means.
+
+# DHT11_v2.py
+This is a pure async driver for DHT11 temperature and humidity sensor
 
