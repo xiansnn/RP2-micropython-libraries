@@ -52,6 +52,7 @@ class DHT11device:
     
     async def async_measure(self):
         while True:
+            await asyncio.sleep(self.measure_period)
             self._send_init_signal()
             pulses = self._capture_pulses()
             if pulses is not None:
@@ -59,8 +60,7 @@ class DHT11device:
                 if self._is_checksum_correct(buffer):
                     self._humidity = buffer[0] + buffer[1] / 10
                     self._temperature = buffer[2] + buffer[3] / 10
-            print(f"Temperature: {self._temperature:3.0f}°C\tHumidity:    {self._humidity:3.0f}%")
-            await asyncio.sleep(self.measure_period)
+            if __name__ == "__main__" : print(f"Temperature: {self._temperature:3.1f}°C\tHumidity:    {self._humidity:3.1f}%")
             
     def _send_init_signal(self):
         self._pin.init(Pin.OPEN_DRAIN, Pin.PULL_UP, value=0)
@@ -96,7 +96,7 @@ class DHT11device:
             return None
         else:
             return transitions[4:]
- 
+        
     def _convert_pulses_to_buffer(self, pulses):
         """Convert a list of 80 pulses into a 5 byte buffer
         The resulting 5 bytes in the buffer will be:
