@@ -3,7 +3,7 @@ These are derived from the original drivers copied from [Pico Primer kit](https:
 
 ST7735.py has been changed to fix a bug when the font size is > 1, and background capability has also been added
 
-## async_push_button.py and push_button.py
+# async_push_button.py and push_button.py
 These are two versions of a general purpose push button driver. 
 They provide debounce feature, IRQ handler, choice of trigger (falling edge, rising edge, both edges), and "repeat" capability.
 - push_button.py is a synchronous version. It is no longer maintained or used, because it blocks te execution of the processor.
