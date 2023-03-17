@@ -30,6 +30,9 @@ class DHT11device:
     
     def get_humidity(self):
         return self._humidity
+    
+    def set_clock(self, active_clock):
+        self._clock = active_clock
  
     def get_temperature(self):
         return self._temperature
@@ -44,8 +47,8 @@ class DHT11device:
                 self._humidity = buffer[0] + buffer[1] / 10
                 self._temperature = buffer[2] + buffer[3] / 10
             if self._clock is not None :
-                t = self._clock.get_local_time()
-                if t[8]: # if time is valid
+                if self._clock.get_status(): # if time is valid
+                    t = self._clock.get_local_time()
                     self._hour = t[3]
                     self._minute = t[4]
                     print(f"{self._temperature:3.1f}°C\t{self._humidity:3.1f}%\t {self._hour:02d}:{self._minute:02d}")
@@ -66,7 +69,7 @@ class DHT11device:
         pulses = bytearray(EXPECTED_PULSES)
         result = 0
         while result >= 0: # result is negative when time_pulse_us times out (here 100
-            result = machine.time_pulse_us(self._pin, HIGH_LEVEL, TIME_OUT) # if TIME_OUT occurs, returns = -1 or -2
+            result = machine.time_pulse_us(self._pin, HIGH_LEVEL, TIME_OUT)
             pulses[idx] = result
             idx += 1
         return pulses
