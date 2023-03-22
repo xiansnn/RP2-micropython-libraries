@@ -47,7 +47,7 @@ class DHT11device:
                 self._humidity = buffer[0] + buffer[1] / 10
                 self._temperature = buffer[2] + buffer[3] / 10
             if self._clock is not None :
-                if self._clock.get_status(): # if time is valid
+                if self._clock.get_time_validity(): # if time is valid
                     t = self._clock.get_local_time()
                     self._hour = t[3]
                     self._minute = t[4]
